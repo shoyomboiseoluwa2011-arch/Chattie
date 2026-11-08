@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chattie - Chat. Snap. Create.</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f5f0ff}
+header{background:linear-gradient(90deg,#008080,#7b2fff);color:white;padding:18px;text-align:center}
+.card{background:white;margin:15px;border-radius:20px;padding:20px;box-shadow:0 4px 15px rgba(0,0,0,.08)}
+input{width:100%;padding:13px;margin:8px 0;border:1px solid #ddd;border-radius:12px;font-size:16px}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-weight:bold;font-size:16px;cursor:pointer}
+.purple{background:linear-gradient(90deg,#008080,#7b2fff);color:white}
+.hidden{display:none}
+.avatar-stage{background:linear-gradient(180deg,#e0f7ff,#f5e6ff);border-radius:20px;padding:20px;text-align:center;position:relative;height:280px;overflow:hidden}
+#avatarFace{font-size:110px;line-height:1}
+#avatarHair{font-size:55px;position:absolute;top:28px;left:50%;transform:translateX(-50%)}
+#avatarTop{font-size:55px;margin-top:-10px}
+#avatarBottom{font-size:45px}
+.opt-title{font-weight:bold;margin:15px 0 5px}
+.opt{display:flex;flex-wrap:wrap;gap:8px}
+.opt button{padding:10px 14px;border-radius:20px;border:1px solid #7b2fff;background:white;cursor:pointer;font-size:18px}
+.opt button.active{background:#7b2fff;color:white}
+.chat{background:#f1f1f1;padding:12px;border-radius:12px;margin:8px 0}
+</style>
+</head>
+<body>
+<header><h1>Chattie</h1><p>Chat. Snap. Create.</p></header>
+
+<!-- SIGN UP -->
+<div class="card" id="signupCard">
+<h2>Create Account</h2>
+<p>English Only • Name + Phone + Password</p>
+<input id="nameInput" placeholder="Full Name">
+<input id="phoneInput" placeholder="Phone Number">
+<input type="password" id="passInput" placeholder="Create Password">
+<button class="btn purple" onclick="signup()">Sign Up For Chattie</button>
+</div>
+
+<!-- AVATAR CREATOR -->
+<div class="card hidden" id="avatarCard">
+<h2>Hi <span id="userName"></span> 👋 Create Your Chattie Avatar</h2>
+<p>Build yourself like Snapchat Bitmoji - pick everything!</p>
+
+<div class="avatar-stage">
+<div id="avatarHair">💇‍♂️</div>
+<div id="avatarFace">🙂</div>
+<div id="avatarTop">👕</div>
+<div id="avatarBottom">👖 👟</div>
+<p id="avatarNameLabel" style="font-weight:bold"></p>
+</div>
+
+<div class="opt-title">1. Face / Skin</div>
+<div class="opt" id="skinOpts">
+<button class="active" onclick="setSkin('🙂',this)">🙂 Light</button>
+<button onclick="setSkin('🙂',this)">🙂 Medium</button>
+<button onclick="setSkin('😀',this)">😀 Smile</button>
+<button onclick="setSkin('😎',this)">😎 Cool</button>
+<button onclick="setSkin('😜',this)">😜 Playful</button>
+</div>
+
+<div class="opt-title">2. Haircut</div>
+<div class="opt">
+<button class="active" onclick="setHair('💇‍♂️',this)">💇‍♂️ Short</button>
+<button onclick="setHair('🦱',this)">🦱 Curly</button>
+<button onclick="setHair('👱‍♀️',this)">👱‍♀️ Long</button>
+<button onclick="setHair('🧑‍🦰',this)">🧑‍🦰 Afro</button>
+<button onclick="setHair('👨‍🦲',this)">👨‍🦲 Bald</button>
+<button onclick="setHair('🧔',this)">🧔 Beard</button>
+</div>
+
+<div class="opt-title">3. Hair Colour</div>
+<div class="opt">
+<button class="active" onclick="setHairColor('none',this)">⬛ Black</button>
+<button onclick="setHairColor('brown',this)">🟫 Brown</button>
+<button onclick="setHairColor('blonde',this)">🟨 Blonde</button>
+<button onclick="setHairColor('red',this)">🟥 Red</button>
+<button onclick="setHairColor('pink',this)">🩷 Pink</button>
+<button onclick="setHairColor('blue',this)">🟦 Blue</button>
+</div>
+
+<div class="opt-title">4. Cloth / Top</div>
+<div class="opt">
+<button class="active" onclick="setTop('👕',this)">👕 T-Shirt</button>
+<button onclick="setTop('👔',this)">👔 Shirt</button>
+<button onclick="setTop('🧥',this)">🧥 Jacket</button>
+<button onclick="setTop('👗',this)">👗 Dress</button>
+<button onclick="setTop('⚽',this)">⚽ Jersey</button>
+<button onclick="setTop('👘',this)">👘 Native</button>
+</div>
+
+<div class="opt-title">5. Trouser / Shoe</div>
+<div class="opt">
+<button class="active" onclick="setBottom('👖 👟',this)">👖 Jeans + Sneakers</button>
+<button onclick="setBottom('👖 👞',this)">👖 + Shoes</button>
+<button onclick="setBottom('🩳 🩴',this)">🩳 + Slippers</button>
+<button onclick="setBottom('👗 👠',this)">👗 + Heels</button>
+<button onclick="setBottom('👖 🥾',this)">👖 + Boots</button>
+</div>
+
+<div class="opt-title">6. Extra</div>
+<div class="opt">
+<button onclick="setExtra('🕶️',this)">🕶️ Glasses</button>
+<button onclick="setExtra('🧢',this)">🧢 Cap</button>
+<button onclick="setExtra('👑',this)">👑 Crown</button>
+<button onclick="setExtra('🎧',this)">🎧 Headset</button>
+</div>
+<p id="extraShow" style="font-size:40px;text-align:center"></p>
+
+<button class="btn purple" onclick="saveAvatar()">Save My Avatar & Go To Chats</button>
+</div>
+
+<!-- CHATS - NO VANISH -->
+<div class="card hidden" id="homeCard">
+<h2>Welcome <span id="homeName"></span></h2>
+<p>Your Avatar: <span id="homeAvatar"></span> <span id="homeHairColor"></span></p>
+<h3>Chats - Messages Stay, No Vanish</h3>
+<div class="chat"><b>Ada:</b> Hey! Love your new avatar 🔥</div>
+<div class="chat"><b>Tunde:</b> That haircut na fire! Where you make am?</div>
+<input id="chatInput" placeholder="Type message...">
+<button class="btn purple" onclick="sendChat()">Send Chat</button>
+<div id="chatList"></div>
+</div>
+
+<script>
+let avatar={face:'🙂',hair:'💇‍♂️',hairColor:'Black',top:'👕',bottom:'👖 👟',extra:''};
+function signup(){
+let n=document.getElementById('nameInput').value;
+let p=document.getElementById('phoneInput').value;
+let pw=document.getElementById('passInput').value;
+if(!n||!p||!pw){alert('Fill Name, Phone and Password');return;}
+localStorage.setItem('chattie_user',JSON.stringify({name:n,phone:p}));
+document.getElementById('signupCard').classList.add('hidden');
+document.getElementById('avatarCard').classList.remove('hidden');
+document.getElementById('userName').innerText=n;
+document.getElementById('avatarNameLabel').innerText=n;
+}
+function setSkin(f,btn){avatar.face=f;document.getElementById('avatarFace').innerText=f;mark(btn);}
+function setHair(h,btn){avatar.hair=h;document.getElementById('avatarHair').innerText=h;mark(btn);}
+function setHairColor(c,btn){
+avatar.hairColor=c;
+let face=document.getElementById('avatarFace');
+if(c=='brown') face.style.filter='sepia(.8)';
+if(c=='blonde') face.style.filter='brightness(1.4) sepia(.4)';
+if(c=='red') face.style.filter='hue-rotate(-30deg) saturate(2)';
+if(c=='pink') face.style.filter='hue-rotate(280deg) saturate(2)';
+if(c=='blue') face.style.filter='hue-rotate(180deg) saturate(2)';
+if(c=='none') face.style.filter='none';
+mark(btn);
+}
+function setTop(t,btn){avatar.top=t;document.getElementById('avatarTop').innerText=t;mark(btn);}
+function setBottom(b,btn){avatar.bottom=b;document.getElementById('avatarBottom').innerText=b;mark(btn);}
+function setExtra(e,btn){avatar.extra=e;document.getElementById('extraShow').innerText=e;mark(btn);}
+function mark(btn){let parent=btn.parentElement;parent.querySelectorAll('button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function saveAvatar(){
+let u=JSON.parse(localStorage.getItem('chattie_user'));
+document.getElementById('avatarCard').classList.add('hidden');
+document.getElementById('homeCard').classList.remove('hidden');
+document.getElementById('homeName').innerText=u.name;
+document.getElementById('homeAvatar').innerText=avatar.face+' '+avatar.hair+' '+avatar.top+' '+avatar.bottom+' '+avatar.extra;
+document.getElementById('homeHairColor').innerText=' | Hair: '+avatar.hairColor;
+alert('Avatar Saved! Welcome '+u.name);
+}
+function sendChat(){
+let v=document.getElementById('chatInput').value; if(!v) return;
+let d=document.createElement('div'); d.className='chat'; d.innerHTML='<b>You:</b> '+v+' <small>• Saved, will NOT vanish</small>';
+document.getElementById('chatList').prepend(d);
+document.getElementById('chatInput').value='';
+}
+</script>
+</body>
+</html>
